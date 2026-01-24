@@ -23,5 +23,5 @@ jobs:
     environment: 
       name: Dev
     steps:
-      - run : echo "${{vars.Dev}}"
+      - run : echo "${{inputs.environment}}"
 
