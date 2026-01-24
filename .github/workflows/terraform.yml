@@ -23,5 +23,5 @@ jobs:
     environment: 
       name: Dev
     steps:
-      - run : echo "${ENVIRONMENT_NAME}"
+      - run : echo "${{ vars.ENVIRONMENT_NAME}}"
 
