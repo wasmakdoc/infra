@@ -23,5 +23,5 @@ jobs:
     environment: 
       name: Dev
     steps:
-      - run : echo "${environment}"
+      - run : echo "${ENVIRONMENT_NAME}"
 
