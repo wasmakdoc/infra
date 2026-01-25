@@ -34,5 +34,5 @@ jobs:
 
       - name: Terraform Plan
         id: plan
-        run: terraform plan --var-file="env/${{vars.ENVIRONMENT_NAME}}"
+        run: terraform plan --var-file="env/${{vars.ENVIRONMENT_NAME}}.tfvars"
 
