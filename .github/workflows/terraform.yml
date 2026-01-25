@@ -5,9 +5,10 @@ run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
 on: [pull_request]
 
 env:
-  ARM_CLIENT_ID: "${{ secrets.AZURE_CLIENT_ID }}"
-  ARM_SUBSCRIPTION_ID: "${{ secrets.AZURE_SUBSCRIPTION_ID }}"
-  ARM_TENANT_ID: "${{ secrets.AZURE_TENANT_ID }}"
+  ARM_CLIENT_ID: "${{ secrets.DEVOPS_PRINCIPAL_CLIENT_ID }}"
+  ARM_CLIENT_SECRET: "${{ secrets.DEVOPS_PRINCIPAL_CLIENT_SECRET }}"
+  ARM_SUBSCRIPTION_ID: "5a0cae34-bd45-444b-8adf-1ad385a97522"
+  ARM_TENANT_ID: "${{ secrets.DEVOPS_PRINCIPAL_CLIENT_TENANT_ID }}"
 
 
 jobs:
