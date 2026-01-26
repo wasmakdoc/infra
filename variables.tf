@@ -3,11 +3,6 @@ variable "environment" {
   default = "dev"
 }
 
-variable "tags" {
-  type = map(any)
-  default = {}
-}
-
 variable "location"{
     type = string
     default = "westeurope"
