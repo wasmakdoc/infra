@@ -7,7 +7,7 @@ on: [pull_request]
 env:
   ARM_CLIENT_ID: "${{ secrets.DEVOPS_PRINCIPAL_CLIENT_ID }}"
   ARM_CLIENT_SECRET: "${{ secrets.DEVOPS_PRINCIPAL_CLIENT_SECRET }}"
-  ARM_SUBSCRIPTION_ID: "5a0cae34-bd45-444b-8adf-1ad385a97522"
+  ARM_SUBSCRIPTION_ID:  "${{ vars.SUBSCRIPTION_ID }}"
   ARM_TENANT_ID: "${{ secrets.DEVOPS_PRINCIPAL_CLIENT_TENANT_ID }}"
   ARM_USE_AZUREAD: true
 
@@ -34,12 +34,14 @@ jobs:
         run: tflint --version
 
       - name: Init TFLint
+        working-directory: ./terraform
         run: tflint --init
         env:
           # https://github.com/terraform-linters/tflint/blob/master/docs/user-guide/plugins.md#avoiding-rate-limiting
           GITHUB_TOKEN: ${{ github.token }}
 
       - name: Run TFLint
+        working-directory: ./terraform
         run: tflint -f compact || true
 
       - name: Setup Terraform
@@ -47,10 +49,12 @@ jobs:
 
 
       - name: Terraform Init
+        working-directory: ./terraform
         id: init
         run: terraform init -backend-config="key=${{ vars.ENVIRONMENT_NAME}}.tdstate" -backend-config="resource_group_name=${{secrets.BACKEND_AZURE_RESOURCE_GROUP_NAME}}" -backend-config="storage_account_name=${{secrets.BACKEND_AZURE_STORAGE_ACCOUNT_NAME}}" -backend-config="container_name=${{secrets.BACKEND_AZURE_STORAGE_ACCOUNT_CONTAINER_NAME}}"
 
       - name: Terraform Plan
+        working-directory: ./terraform
         id: plan
         run: terraform plan --var-file="env/${{vars.ENVIRONMENT_NAME}}.tfvars"
       
