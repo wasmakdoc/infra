@@ -1,7 +1,7 @@
 
 
-name: Depoy Web App
-run-name: ${{ github.actor }} is deploying Calculate Microservice🚀
+name: Destroy Infrastructure
+run-name: ${{ github.actor }} is destroying Calculate Microservice Infrastructure🚀
 on:
   workflow_dispatch:
 

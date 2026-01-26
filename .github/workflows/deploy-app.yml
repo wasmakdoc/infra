@@ -1,6 +1,6 @@
 
 
-name: Depoy Web App
+name: Provision and Deploy Web App
 run-name: ${{ github.actor }} is deploying Calculate Microservice🚀
 on:
   workflow_dispatch:
