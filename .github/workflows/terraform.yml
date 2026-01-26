@@ -58,18 +58,11 @@ jobs:
         id: checkov
         uses: bridgecrewio/checkov-action@v12
         with:
-          directory: infra
+          directory: infra/
           framework: terraform
           output_format: github_failed_only
-          output_file_path: ./terraform
+          output_file_path: terraform.xml
           quiet: true
           soft_fail: true
 
-      - name: Checkov Report
-        id: checkov-report
-        working-directory: ./terraform
-        run: |
-          while IFS= read -r line; do
-            echo "$line" >> $GITHUB_STEP_SUMMARY
-          done < results_github_failed_only.md
-
+   
