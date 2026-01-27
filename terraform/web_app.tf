@@ -10,7 +10,7 @@ resource "azurerm_linux_web_app" "web_app" {
 
     application_stack {
 
-      dotnet_version = "v8.0"
+      dotnet_version = "8.0"
     }
   }
 
