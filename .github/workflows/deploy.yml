@@ -8,11 +8,12 @@ on:
 env:
   ARM_USE_AZUREAD: true
   AZURE_WEBAPP_NAME:  "${{ vars.AZURE_WEBAPP_NAME }}"
+  ARM_SUBSCRIPTION_ID:  "${{ vars.SUBSCRIPTION_ID }}"
 
 
 jobs:
 
-  Terraform-Plan:
+  Deploy-tf-dotnet:
     runs-on: ubuntu-latest
     environment: 
       name: Dev

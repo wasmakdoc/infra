@@ -16,7 +16,7 @@ env:
 
 jobs:
 
-  Terraform-Plan:
+  Terraform-Destroy:
     runs-on: ubuntu-latest
     environment: 
       name: Dev
