@@ -6,7 +6,7 @@ terraform {
 
     storage_account_name ="stwadwandevweu1"
     container_name = "terraform"
-    key      ="dev.tdstate"
+    key      ="dev.tfstate"
     resource_group_name   ="rg-wadwan-weu1"
     }
 
