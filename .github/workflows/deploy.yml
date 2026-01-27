@@ -42,7 +42,7 @@ jobs:
       - name: Terraform Output
         working-directory: ./terraform
         id: output
-        run: jq '.app_service_url.value'  (terraform output)
+        run:  terraform output |  jq '.app_service_url.value'
 
         
       - uses: azure/login@v2
