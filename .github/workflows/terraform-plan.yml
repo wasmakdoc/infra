@@ -11,6 +11,8 @@ env:
   ARM_SUBSCRIPTION_ID:  "${{ vars.SUBSCRIPTION_ID }}"
   ARM_TENANT_ID: "${{ secrets.DEVOPS_PRINCIPAL_CLIENT_TENANT_ID }}"
   ARM_USE_AZUREAD: true
+  AZURE_WEBAPP_NAME:  "${{ vars.AZURE_WEBAPP_NAME }}"
+
 
 
 jobs:
@@ -96,6 +98,17 @@ jobs:
           dotnet restore
           dotnet build --configuration Release
           dotnet publish -c Release --property:PublishDir='publish' 
+
+       # Deploy to Azure Web apps
+      - name: 'Run Azure webapp deploy action using publish profile credentials'
+        uses: azure/webapps-deploy@v3
+        with: 
+          app-name: ${{ env.AZURE_WEBAPP_NAME }} # Replace with your app name
+          package: 'publish'
+      
+      - name: logout
+        run: |
+          az logout
 
 
    
