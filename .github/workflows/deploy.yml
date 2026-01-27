@@ -43,7 +43,7 @@ jobs:
         working-directory: ./terraform
         id: output
         run:  |
-          web_service_url=$(terraform output |  jq .[].app_service_url.value) >> $GITHUB_ENV
+          web_service_url=terraform output -raw app_service_url >> $GITHUB_ENV
           echo ${{ env.AZURE_WEBAPP_NAME }}
         
 #  - uses: azure/login@v2
