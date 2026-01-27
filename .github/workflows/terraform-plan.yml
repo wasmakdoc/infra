@@ -95,7 +95,7 @@ jobs:
         run: |
           dotnet restore
           dotnet build --configuration Release
-          dotnet publish -c Release --property:PublishDir='/myapp' 
+          dotnet publish -c Release --property:PublishDir='publish' 
 
 
    
