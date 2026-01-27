@@ -32,7 +32,7 @@ jobs:
       - name: Terraform Init
         working-directory: ./terraform
         id: init
-        run: terraform init -backend-config="key=${{ vars.ENVIRONMENT_NAME}}.tdstate" -backend-config="resource_group_name=${{secrets.BACKEND_AZURE_RESOURCE_GROUP_NAME}}" -backend-config="storage_account_name=${{secrets.BACKEND_AZURE_STORAGE_ACCOUNT_NAME}}" -backend-config="container_name=${{secrets.BACKEND_AZURE_STORAGE_ACCOUNT_CONTAINER_NAME}}"
+        run: terraform init -backend-config="key=${{ vars.ENVIRONMENT_NAME}}.tfstate" -backend-config="resource_group_name=${{secrets.BACKEND_AZURE_RESOURCE_GROUP_NAME}}" -backend-config="storage_account_name=${{secrets.BACKEND_AZURE_STORAGE_ACCOUNT_NAME}}" -backend-config="container_name=${{secrets.BACKEND_AZURE_STORAGE_ACCOUNT_CONTAINER_NAME}}"
 
       - name: Terraform Apply
         working-directory: ./terraform
@@ -63,7 +63,7 @@ jobs:
           app-name: ${{ env.AZURE_WEBAPP_NAME }} # Replace with your app name
           package: '${{ runner.temp }}/myapp'
           startup-command: "./AjgPlatformTest"
-          
+
       - name: logout
         run: |
           az logout
