@@ -12,6 +12,7 @@ env:
   ARM_TENANT_ID: "${{ secrets.DEVOPS_PRINCIPAL_CLIENT_TENANT_ID }}"
   ARM_USE_AZUREAD: true
   AZURE_WEBAPP_NAME:  "${{ vars.AZURE_WEBAPP_NAME }}"
+  web_service_url: ""
 
 
 jobs:
