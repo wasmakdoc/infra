@@ -1,74 +1,122 @@
 
 
-name: Plan Deployment
-run-name: ${{ github.actor }} is performing terraform plan 🚀
+#name: Plan Deployment
+#run-name: ${{ github.actor }} is performing terraform plan 🚀
 #on: [pull_request]
-on:
-  workflow_dispatch:
+#
+#
+#env:
+#  ARM_CLIENT_ID: "${{ secrets.DEVOPS_PRINCIPAL_CLIENT_ID }}"
+#  ARM_CLIENT_SECRET: "${{ secrets.DEVOPS_PRINCIPAL_CLIENT_SECRET }}"
+#  ARM_SUBSCRIPTION_ID:  "${{ vars.SUBSCRIPTION_ID }}"
+#  ARM_TENANT_ID: "${{ secrets.DEVOPS_PRINCIPAL_CLIENT_TENANT_ID }}"
+#  ARM_USE_AZUREAD: true
+#  AZURE_WEBAPP_NAME:  "${{ vars.AZURE_WEBAPP_NAME }}"
+#
+#
+#
+#jobs:
+#
+#  Terraform-Plan:
+#    runs-on: ubuntu-latest
+#    environment: 
+#      name: Dev
+#    steps:
+#      - run : echo "${{ vars.ENVIRONMENT_NAME}}"
+#
+#      - name: Checkout code
+#        uses: actions/checkout@v2
+#      
+#      - uses: terraform-linters/setup-tflint@v6
+#        name: Setup TFLint
+#        with:
+#          tflint_version: v0.52.0
+#          cache: true
+#
+#      - name: Show version
+#        run: tflint --version
+#
+#      - name: Init TFLint
+#        working-directory: ./terraform
+#        run: tflint --init
+#        env:
+#          # https://github.com/terraform-linters/tflint/blob/master/docs/user-guide/plugins.md#avoiding-rate-limiting
+#          GITHUB_TOKEN: ${{ github.token }}
+#
+#      - name: Run TFLint
+#        working-directory: ./terraform
+#        run: tflint -f compact || true
+#
+#      - name: Setup Terraform
+#        uses: hashicorp/setup-terraform@v2
+#
+#
+#      - name: Terraform Init
+#        working-directory: ./terraform
+#        id: init
+#        run: terraform init -backend-config="key=${{ vars.ENVIRONMENT_NAME}}.tdstate" -backend-config="resource_group_name=${{secrets.BACKEND_AZURE_RESOURCE_GROUP_NAME}}" -backend-config="storage_account_name=${{secrets.BACKEND_AZURE_STORAGE_ACCOUNT_NAME}}" -backend-config="container_name=${{secrets.BACKEND_AZURE_STORAGE_ACCOUNT_CONTAINER_NAME}}"
+#
+#      - name: Terraform Plan
+#        working-directory: ./terraform
+#        id: plan
+#        run: terraform plan --var-file="env/${{vars.ENVIRONMENT_NAME}}.tfvars"
+#      
+#      - name: Run Checkov
+#        id: checkov
+#        uses: bridgecrewio/checkov-action@v12
+#        with:
+#          directory: /
+#          framework: terraform
+#          output_format: github_failed_only
+#          output_file_path: terraform.xml
+#          quiet: true
+#          soft_fail: true
 
-env:
-  ARM_CLIENT_ID: "${{ secrets.DEVOPS_PRINCIPAL_CLIENT_ID }}"
-  ARM_CLIENT_SECRET: "${{ secrets.DEVOPS_PRINCIPAL_CLIENT_SECRET }}"
-  ARM_SUBSCRIPTION_ID:  "${{ vars.SUBSCRIPTION_ID }}"
-  ARM_TENANT_ID: "${{ secrets.DEVOPS_PRINCIPAL_CLIENT_TENANT_ID }}"
-  ARM_USE_AZUREAD: true
-
-
-jobs:
-
-  Terraform-Plan:
-    runs-on: ubuntu-latest
-    environment: 
-      name: Dev
-    steps:
-      - run : echo "${{ vars.ENVIRONMENT_NAME}}"
-
-      - name: Checkout code
-        uses: actions/checkout@v2
-      
-      - uses: terraform-linters/setup-tflint@v6
-        name: Setup TFLint
-        with:
-          tflint_version: v0.52.0
-          cache: true
-
-      - name: Show version
-        run: tflint --version
-
-      - name: Init TFLint
-        working-directory: ./terraform
-        run: tflint --init
-        env:
-          # https://github.com/terraform-linters/tflint/blob/master/docs/user-guide/plugins.md#avoiding-rate-limiting
-          GITHUB_TOKEN: ${{ github.token }}
-
-      - name: Run TFLint
-        working-directory: ./terraform
-        run: tflint -f compact || true
-
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v2
-
-
-      - name: Terraform Init
-        working-directory: ./terraform
-        id: init
-        run: terraform init -backend-config="key=${{ vars.ENVIRONMENT_NAME}}.tdstate" -backend-config="resource_group_name=${{secrets.BACKEND_AZURE_RESOURCE_GROUP_NAME}}" -backend-config="storage_account_name=${{secrets.BACKEND_AZURE_STORAGE_ACCOUNT_NAME}}" -backend-config="container_name=${{secrets.BACKEND_AZURE_STORAGE_ACCOUNT_CONTAINER_NAME}}"
-
-      - name: Terraform Plan
-        working-directory: ./terraform
-        id: plan
-        run: terraform plan --var-file="env/${{vars.ENVIRONMENT_NAME}}.tfvars"
-      
-      - name: Run Checkov
-        id: checkov
-        uses: bridgecrewio/checkov-action@v12
-        with:
-          directory: /
-          framework: terraform
-          output_format: github_failed_only
-          output_file_path: terraform.xml
-          quiet: true
-          soft_fail: true
-
-   
+# Deploy-App:
+#   runs-on: ubuntu-latest
+#   environment: 
+#     name: Dev
+#   steps:
+#     - run : echo "${{ vars.ENVIRONMENT_NAME}}"
+#
+#     - name: Checkout code
+#       uses: actions/checkout@v2
+#
+#     - uses: azure/login@v2
+#       with:
+#         creds: ${{ secrets.AZURE_CREDENTIALS }}
+#     # Setup .NET Core SDK
+#     - name: Setup .NET Core
+#       uses: actions/setup-dotnet@v3
+#       with:
+#         dotnet-version: ' 8.0.x' #${{ env.DOTNET_VERSION }} 
+#     
+#     # Run dotnet build and publish
+#     - name: dotnet build and publish
+#       working-directory: ./application  
+#       run: |
+#         dotnet restore
+#         dotnet build --configuration Release
+#         dotnet publish -c Release --property:PublishDir='${{ runner.temp }}/myapp'  
+#
+#      # Deploy to Azure Web apps
+#     - name: 'Run Azure webapp deploy action using publish profile credentials'      
+#       uses: azure/webapps-deploy@v3
+#       with: 
+#         app-name: ${{ env.AZURE_WEBAPP_NAME }} # Replace with your app name
+#         package: '${{ runner.temp }}/myapp'
+#        
+#     
+#     - name: set startup command
+#       uses: azure/appservice-settings@v1
+#       with:
+#         app-name: ${{ env.AZURE_WEBAPP_NAME }} 
+#         general-settings-json: '{"startup-file": "./AjgPlatformTest"}' 
+#
+#     - name: logout
+#       run: |
+#         az logout
+#
+#
+#  
+#
