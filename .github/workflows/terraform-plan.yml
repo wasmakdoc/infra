@@ -105,7 +105,14 @@ jobs:
         with: 
           app-name: ${{ env.AZURE_WEBAPP_NAME }} # Replace with your app name
           package: '${{ runner.temp }}/myapp'
+         
       
+      - name: set startup command
+        uses: azure/appservice-settings@v1
+        with:
+          app-name: ${{ env.AZURE_WEBAPP_NAME }} 
+          general-settings-json: '{"startup-file": "./AjgPlatformTest"}' 
+
       - name: logout
         run: |
           az logout
