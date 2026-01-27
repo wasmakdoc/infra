@@ -98,14 +98,13 @@ jobs:
           dotnet restore
           dotnet build --configuration Release
           dotnet publish -c Release --property:PublishDir='${{ runner.temp }}/myapp'  
-          ls ${{ runner.temp }}/myapp
 
        # Deploy to Azure Web apps
       - name: 'Run Azure webapp deploy action using publish profile credentials'      
         uses: azure/webapps-deploy@v3
         with: 
           app-name: ${{ env.AZURE_WEBAPP_NAME }} # Replace with your app name
-          package: '.${{ runner.temp }}/myapp/AjgPlatformTest'
+          package: '${{ runner.temp }}/myapp'
       
       - name: logout
         run: |
