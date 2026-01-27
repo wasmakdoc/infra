@@ -45,8 +45,8 @@ jobs:
         working-directory: ./terraform
         id: tfoutput
         run:  |
-          echo "AZURE_WEBAPP_NAME=$(terraform output -raw app_service_name)" >> "$GITHUB_OUTPUT"          
-        
+          echo 'AZURE_WEBAPP_NAME=$(terraform output -raw app_service_name)'' >> "$GITHUB_OUTPUT"          
+         
       - uses: azure/login@v2
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
