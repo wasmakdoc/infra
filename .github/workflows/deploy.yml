@@ -42,7 +42,7 @@ jobs:
       - name: Terraform Output
         working-directory: ./terraform
         id: output
-        run: terraform output --var-file="env/${{vars.ENVIRONMENT_NAME}}.tfvars" 
+        run: jq '.app_service_url.value'  (terraform output)
 
         
       - uses: azure/login@v2
