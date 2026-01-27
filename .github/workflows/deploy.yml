@@ -11,12 +11,13 @@ env:
   ARM_SUBSCRIPTION_ID:  "${{ vars.SUBSCRIPTION_ID }}"
   ARM_TENANT_ID: "${{ secrets.DEVOPS_PRINCIPAL_CLIENT_TENANT_ID }}"
   ARM_USE_AZUREAD: true
-  AZURE_WEBAPP_NAME:  "${{ vars.AZURE_WEBAPP_NAME }}"
+
+  
 
 
 jobs:
 
-  Terraform-Plan:
+  Deploy-Terraform-And-App:
     runs-on: ubuntu-latest
     environment: 
       name: Dev
@@ -40,11 +41,12 @@ jobs:
         run: terraform apply --var-file="env/${{vars.ENVIRONMENT_NAME}}.tfvars" --auto-approve
 
       - name: Terraform Output
+        shell: bash
         working-directory: ./terraform
-        id: output
-        run: terraform output --var-file="env/${{vars.ENVIRONMENT_NAME}}.tfvars" 
-
-        
+        id: tfoutput
+        run:  |
+          echo 'AZURE_WEBAPP_NAME=$(terraform output -raw app_service_name)'' >> "$GITHUB_OUTPUT"          
+         
       - uses: azure/login@v2
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
@@ -63,11 +65,11 @@ jobs:
           dotnet build --configuration Release
           dotnet publish -c Release --property:PublishDir='${{ runner.temp }}/myapp'  
 
-       # Deploy to Azure Web apps
+      # Deploy to Azure Web apps
       - name: 'Run Azure webapp deploy action using publish profile credentials'      
         uses: azure/webapps-deploy@v3
         with: 
-          app-name: ${{ env.AZURE_WEBAPP_NAME }} # Replace with your app name
+          app-name: ${{ steps.tfoutput.AZURE_WEBAPP_NAME }} # Replace with your app name
           package: '${{ runner.temp }}/myapp'
           startup-command: "./AjgPlatformTest"
 
@@ -76,6 +78,6 @@ jobs:
           az logout
 
 
-   
 
-    
+
+
