@@ -6,17 +6,16 @@ resource "azurerm_linux_web_app" "web_app" {
 
 
   site_config {
-    always_on = false
+    always_on = false //Free tier requirement
 
     application_stack {
-
       dotnet_version = "8.0"
     }
   }
 
   tags = local.tags
   lifecycle {
-    ignore_changes = [site_config[0].app_command_line]
+    ignore_changes = [site_config[0].app_command_line] //this setting will be set up when the web app is deploye. No need to refer an unexisting command
   }
   depends_on = [azurerm_service_plan.app_service_plan]
 }
