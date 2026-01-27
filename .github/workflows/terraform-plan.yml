@@ -76,7 +76,7 @@ jobs:
       name: Dev
     steps:
       - run : echo "${{ vars.ENVIRONMENT_NAME}}"
-      
+
       - name: Checkout code
         uses: actions/checkout@v2
 
@@ -91,7 +91,7 @@ jobs:
       
       # Run dotnet build and publish
       - name: dotnet build and publish
-        working-directory: ./application/src  
+        working-directory: ./application  
         run: |
           dotnet restore
           dotnet build --configuration Release
