@@ -11,8 +11,8 @@ env:
   ARM_SUBSCRIPTION_ID:  "${{ vars.SUBSCRIPTION_ID }}"
   ARM_TENANT_ID: "${{ secrets.DEVOPS_PRINCIPAL_CLIENT_TENANT_ID }}"
   ARM_USE_AZUREAD: true
-  AZURE_WEBAPP_NAME:  "${{ vars.AZURE_WEBAPP_NAME }}"
-  web_service_url: ""
+  AZURE_WEBAPP_NAME:  ""
+  
 
 
 jobs:
@@ -45,8 +45,8 @@ jobs:
         working-directory: ./terraform
         id: output
         run:  |
-          echo "web_service_url=$(terraform output -raw app_service_url)" >> $GITHUB_ENV
-          echo ${{ env.web_service_url }}
+          echo "AZURE_WEBAPP_NAME=$(terraform output -raw app_service_name)" >> $GITHUB_ENV
+          
         
 #  - uses: azure/login@v2
 #    with:
