@@ -5,8 +5,8 @@ terraform {
   backend "azurerm" {
 
     storage_account_name ="stwadwandevweu1"
-    container_name = "terraform"
-    key      ="dev.tfstate"
+    container_name = "tfstate"
+    key      = "terraform.tfstate"
     resource_group_name   ="rg-wadwan-weu1"
     }
 

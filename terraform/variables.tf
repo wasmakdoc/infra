@@ -16,3 +16,8 @@ variable "application_name" {
   default = "hiring"
 }
 
+//Resource Group Name
+variable "resource_group_name" {
+  type = string
+  default = "rg-azc-wa-sbx-we-nc0n"
+}
