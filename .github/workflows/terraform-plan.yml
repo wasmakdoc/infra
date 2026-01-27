@@ -2,9 +2,8 @@
 
 name: Plan Deployment
 run-name: ${{ github.actor }} is performing terraform plan 🚀
-#on: [pull_request]
-on:
-  workflow_dispatch:
+on: [pull_request]
+
 
 env:
   ARM_CLIENT_ID: "${{ secrets.DEVOPS_PRINCIPAL_CLIENT_ID }}"
@@ -16,59 +15,71 @@ env:
 
 jobs:
 
-  Terraform-Plan:
+#  Terraform-Plan:
+#    runs-on: ubuntu-latest
+#    environment: 
+#      name: Dev
+#    steps:
+#      - run : echo "${{ vars.ENVIRONMENT_NAME}}"
+#
+#      - name: Checkout code
+#        uses: actions/checkout@v2
+#      
+#      - uses: terraform-linters/setup-tflint@v6
+#        name: Setup TFLint
+#        with:
+#          tflint_version: v0.52.0
+#          cache: true
+#
+#      - name: Show version
+#        run: tflint --version
+#
+#      - name: Init TFLint
+#        working-directory: ./terraform
+#        run: tflint --init
+#        env:
+#          # https://github.com/terraform-linters/tflint/blob/master/docs/user-guide/plugins.md#avoiding-rate-limiting
+#          GITHUB_TOKEN: ${{ github.token }}
+#
+#      - name: Run TFLint
+#        working-directory: ./terraform
+#        run: tflint -f compact || true
+#
+#      - name: Setup Terraform
+#        uses: hashicorp/setup-terraform@v2
+#
+#
+#      - name: Terraform Init
+#        working-directory: ./terraform
+#        id: init
+#        run: terraform init -backend-config="key=${{ vars.ENVIRONMENT_NAME}}.tdstate" -backend-config="resource_group_name=${{secrets.BACKEND_AZURE_RESOURCE_GROUP_NAME}}" -backend-config="storage_account_name=${{secrets.BACKEND_AZURE_STORAGE_ACCOUNT_NAME}}" -backend-config="container_name=${{secrets.BACKEND_AZURE_STORAGE_ACCOUNT_CONTAINER_NAME}}"
+#
+#      - name: Terraform Plan
+#        working-directory: ./terraform
+#        id: plan
+#        run: terraform plan --var-file="env/${{vars.ENVIRONMENT_NAME}}.tfvars"
+#      
+#      - name: Run Checkov
+#        id: checkov
+#        uses: bridgecrewio/checkov-action@v12
+#        with:
+#          directory: /
+#          framework: terraform
+#          output_format: github_failed_only
+#          output_file_path: terraform.xml
+#          quiet: true
+#          soft_fail: true
+
+  Deploy-App:
     runs-on: ubuntu-latest
     environment: 
       name: Dev
     steps:
       - run : echo "${{ vars.ENVIRONMENT_NAME}}"
 
-      - name: Checkout code
-        uses: actions/checkout@v2
-      
-      - uses: terraform-linters/setup-tflint@v6
-        name: Setup TFLint
+      - uses: azure/login@v2
         with:
-          tflint_version: v0.52.0
-          cache: true
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Show version
-        run: tflint --version
-
-      - name: Init TFLint
-        working-directory: ./terraform
-        run: tflint --init
-        env:
-          # https://github.com/terraform-linters/tflint/blob/master/docs/user-guide/plugins.md#avoiding-rate-limiting
-          GITHUB_TOKEN: ${{ github.token }}
-
-      - name: Run TFLint
-        working-directory: ./terraform
-        run: tflint -f compact || true
-
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v2
-
-
-      - name: Terraform Init
-        working-directory: ./terraform
-        id: init
-        run: terraform init -backend-config="key=${{ vars.ENVIRONMENT_NAME}}.tdstate" -backend-config="resource_group_name=${{secrets.BACKEND_AZURE_RESOURCE_GROUP_NAME}}" -backend-config="storage_account_name=${{secrets.BACKEND_AZURE_STORAGE_ACCOUNT_NAME}}" -backend-config="container_name=${{secrets.BACKEND_AZURE_STORAGE_ACCOUNT_CONTAINER_NAME}}"
-
-      - name: Terraform Plan
-        working-directory: ./terraform
-        id: plan
-        run: terraform plan --var-file="env/${{vars.ENVIRONMENT_NAME}}.tfvars"
-      
-      - name: Run Checkov
-        id: checkov
-        uses: bridgecrewio/checkov-action@v12
-        with:
-          directory: /
-          framework: terraform
-          output_format: github_failed_only
-          output_file_path: terraform.xml
-          quiet: true
-          soft_fail: true
 
    
