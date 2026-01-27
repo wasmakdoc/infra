@@ -40,11 +40,12 @@ jobs:
         run: terraform apply --var-file="env/${{vars.ENVIRONMENT_NAME}}.tfvars" --auto-approve
 
       - name: Terraform Output
+        shell: bash
         working-directory: ./terraform
         id: output
         run:  |
-          web_service_url=terraform output -raw app_service_url >> $GITHUB_ENV
-          echo ${{ env.AZURE_WEBAPP_NAME }}
+          echo "web_service_url=$(terraform output -raw app_service_url)" >> $GITHUB_ENV
+          echo ${{ env.web_service_url }}
         
 #  - uses: azure/login@v2
 #    with:
