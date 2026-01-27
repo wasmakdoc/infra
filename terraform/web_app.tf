@@ -10,5 +10,8 @@ resource "azurerm_linux_web_app" "web_app" {
   }
 
   tags       = local.tags
+  lifecycle {
+    ignore_changes = [ site_config.app_command_line ]
+  }
   depends_on = [azurerm_service_plan.app_service_plan]
 }
