@@ -97,14 +97,14 @@ jobs:
         run: |
           dotnet restore
           dotnet build --configuration Release
-          dotnet publish -c Release --property:PublishDir='publish' 
+          dotnet publish -c Release --property:PublishDir='publish1' 
 
        # Deploy to Azure Web apps
       - name: 'Run Azure webapp deploy action using publish profile credentials'      
         uses: azure/webapps-deploy@v3
         with: 
           app-name: ${{ env.AZURE_WEBAPP_NAME }} # Replace with your app name
-          package: './application/publish'
+          package: './application/publish1'
       
       - name: logout
         run: |
