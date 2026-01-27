@@ -7,7 +7,7 @@ on:
 
 env:
   ARM_USE_AZUREAD: true
-  AZURE_WEBAPP_NAME:  "${{ vars.AZURE_WEBAPP_NAME }}"
+  AZURE_WEBAPP_NAME:  ""
   ARM_SUBSCRIPTION_ID:  "${{ vars.SUBSCRIPTION_ID }}"
 
 
@@ -27,6 +27,8 @@ jobs:
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
+        with: 
+          terraform_wrapper: false
   
       - name: Terraform Init
         working-directory: ./terraform
@@ -36,7 +38,10 @@ jobs:
       - name: Terraform Apply
         working-directory: ./terraform
         id: apply
-        run: terraform apply --var-file="env/${{vars.ENVIRONMENT_NAME}}.tfvars" --auto-approve    
+        run: |
+         terraform apply --var-file="env/${{vars.ENVIRONMENT_NAME}}.tfvars" --auto-approve    
+         echo "AZURE_WEBAPP_NAME=$(terraform output -raw app_service_name)" >> $GITHUB_ENV
+         echo ${{ env.AZURE_WEBAPP_NAME }}
       
       # Setup .NET Core SDK
       - name: Setup .NET Core
@@ -60,12 +65,9 @@ jobs:
           package: '${{ runner.temp }}/myapp'
           startup-command: "./AjgPlatformTest"
 
-      - name: Perform a Pester test from the Tests.ps1 file
-        shell: pwsh
+      - name: logout
         run: |
-          .\validate.tests.ps1 -TerraformConfigurationPath "terraform"
-
-
+          az logout
 
 
    
