@@ -98,6 +98,7 @@ jobs:
           dotnet restore
           dotnet build --configuration Release
           dotnet publish -c Release --property:PublishDir='${{ runner.temp }}/myapp'  
+          ls ${{ runner.temp }}/myapp
 
        # Deploy to Azure Web apps
       - name: 'Run Azure webapp deploy action using publish profile credentials'      
