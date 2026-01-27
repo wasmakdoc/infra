@@ -7,11 +7,16 @@ resource "azurerm_linux_web_app" "web_app" {
 
   site_config {
     always_on = false
+
+    application_stack {
+
+      dotnet_version = "v8.0"
+    }
   }
 
-  tags       = local.tags
+  tags = local.tags
   lifecycle {
-    ignore_changes = [ site_config[0].app_command_line ]
+    ignore_changes = [site_config[0].app_command_line]
   }
   depends_on = [azurerm_service_plan.app_service_plan]
 }
