@@ -6,9 +6,10 @@ param(
 
 BeforeAll {
     $ErrorActionPreference = 'Continue'
-    $script:appServiceUrl = "https://applxhiringdevweu001.azurewebsites.net/"
+    $script:appServiceUrl = $null
     Push-Location $TerraformConfigurationPath
-    $outputJson = terraform output -json | ConvertFrom-Json -AsHashtable
+    $outputJson = terraform output -json | ConvertFrom-Json #-AsHashtable
+    
     Pop-Location
     if ($outputJson.app_service_url) {
         $script:appServiceUrl = $outputJson.app_service_url.value
