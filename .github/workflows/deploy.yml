@@ -13,7 +13,7 @@ jobs:
   Deploy-tf-dotnet:
     runs-on: ubuntu-latest
     environment: 
-      name: Dev
+      name: Ajg
     env:
       ARM_USE_AZUREAD: true
       AZURE_WEBAPP_NAME:  ""
@@ -64,7 +64,7 @@ jobs:
         with: 
           app-name: ${{ env.AZURE_WEBAPP_NAME }} # Replace with your app name
           package: '${{ runner.temp }}/myapp'
-          startup-command: "./AjgPlatformTest"#
+          startup-command: "./AjgPlatformTest"
 
       - name: Validate Deployment
         shell: pwsh
