@@ -10,7 +10,7 @@ on:
 
 jobs:
 
-  Deploy-tf-dotnet:
+  validate-deployment:
     runs-on: ubuntu-latest
     environment: 
       name: Ajg
