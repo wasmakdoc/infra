@@ -1,23 +1,30 @@
 //Environment name
 variable "environment" {
-  type = string
-  default = "dev"
+  type        = string
+  description = "Specifies the environment: dev or ajg"
+  default     = "dev"
+
+  validation {
+    condition     = contains(["dev", "ajg", ], var.environment)
+    error_message = "Environment must be dev or ajg."
+  }
 }
 
-//If the solution is only hosted in one region
-variable "location"{
-    type = string
-    default = "westeurope"
-}  
+variable "location" {
+  type        = string
+  description = "specifies the default location of the resources"
+  default     = "westeurope"
+}
 
-//Application/project name
 variable "application_name" {
-  type = string
-  default = "hiring"
+  type        = string
+  description = "specifies the application name"
+  default     = "hiring"
 }
 
-//Resource Group Name
+
 variable "resource_group_name" {
-  type = string
-  default = "rg-azc-wa-sbx-we-nc0n"
+  type        = string
+  description = "Specifies the resource group name where the tf resources will be provisionned"
+  default     = "rg-azc-wa-sbx-we-nc0n"
 }

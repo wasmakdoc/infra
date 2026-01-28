@@ -5,16 +5,16 @@ run-name: ${{ github.actor }} is destroying Calculate Microservice Infrastructur
 on:
   workflow_dispatch:
 
-env:  
-  ARM_SUBSCRIPTION_ID:  "${{ vars.SUBSCRIPTION_ID }}"
-  ARM_USE_AZUREAD: true
-
 jobs:
 
   Terraform-Destroy:
     runs-on: ubuntu-latest
     environment: 
       name: Dev
+    env:  
+      ARM_SUBSCRIPTION_ID:  "${{ vars.SUBSCRIPTION_ID }}"
+      ARM_USE_AZUREAD: true
+      
     steps:
       - uses: azure/login@v2
         with:
