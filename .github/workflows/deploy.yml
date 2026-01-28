@@ -72,6 +72,12 @@ jobs:
           ls
           .\validate.tests.ps1 -TerraformConfigurationPath "terraform"
 
+      - name: Validate Deployment
+        shell: pwsh
+        run: |
+          ls
+          .\validate.tests.ps1 -TerraformConfigurationPath "terraform"
+
       - name: logout
         run: |
           az logout
