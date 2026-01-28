@@ -10,7 +10,7 @@ jobs:
   Terraform-Destroy:
     runs-on: ubuntu-latest
     environment: 
-      name: Dev
+      name: Ajg
     env:  
       ARM_SUBSCRIPTION_ID:  "${{ vars.SUBSCRIPTION_ID }}"
       ARM_USE_AZUREAD: true
