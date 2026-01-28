@@ -1,7 +1,7 @@
 
 
-name: Provision and Deploy Web App
-run-name: ${{ github.actor }} is deploying Calculate Microservice🚀
+name: Validate Deployment
+run-name: ${{ github.actor }} is validating Calculate Microservice Deployment🚀
 on:
   workflow_dispatch:
 
@@ -44,27 +44,12 @@ jobs:
          terraform apply --var-file="env/${{vars.ENVIRONMENT_NAME}}.tfvars" --auto-approve    
          echo "AZURE_WEBAPP_NAME=$(terraform output -raw app_service_name)" >> $GITHUB_ENV
          echo ${{ env.AZURE_WEBAPP_NAME }}
-      
-      # Setup .NET Core SDK
-      - name: Setup .NET Core
-        uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: ' 8.0.x' #${{ env.DOTNET_VERSION }} 
-      
-      # Run dotnet build and publish
-      - name: dotnet build and publish
-        working-directory: ./application  
+
+      - name: Validate Deployment
+        shell: pwsh
         run: |
-          dotnet restore
-          dotnet build --configuration Release
-          dotnet publish -c Release --property:PublishDir='${{ runner.temp }}/myapp'  #
-       # Deploy to Azure Web apps
-      - name: 'Run Azure webapp deploy action using publish profile credentials'      
-        uses: azure/webapps-deploy@v3
-        with: 
-          app-name: ${{ env.AZURE_WEBAPP_NAME }} # Replace with your app name
-          package: '${{ runner.temp }}/myapp'
-          startup-command: "./AjgPlatformTest"           
+          ls
+          .\validate.tests.ps1 -TerraformConfigurationPath "terraform"      
 
       - name: logout
         run: |
