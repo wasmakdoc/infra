@@ -5,10 +5,7 @@ run-name: ${{ github.actor }} is deploying Calculate Microservice🚀
 on:
   workflow_dispatch:
 
-env:
-  ARM_USE_AZUREAD: true
-  AZURE_WEBAPP_NAME:  ""
-  ARM_SUBSCRIPTION_ID:  "${{ vars.SUBSCRIPTION_ID }}"
+
 
 
 jobs:
@@ -17,6 +14,11 @@ jobs:
     runs-on: ubuntu-latest
     environment: 
       name: Dev
+    env:
+      ARM_USE_AZUREAD: true
+      AZURE_WEBAPP_NAME:  ""
+      ARM_SUBSCRIPTION_ID:  "${{ vars.SUBSCRIPTION_ID }}"          
+
     steps:
       - uses: azure/login@v2
         with:
@@ -64,6 +66,12 @@ jobs:
           app-name: ${{ env.AZURE_WEBAPP_NAME }} # Replace with your app name
           package: '${{ runner.temp }}/myapp'
           startup-command: "./AjgPlatformTest"
+
+      - name: Validate Deployment
+        shell: pwsh
+        run: |
+          ls
+          .\validate.tests.ps1
 
       - name: logout
         run: |
